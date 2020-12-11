@@ -1,5 +1,4 @@
 @include('layouts.header', ['file' => 'home'])
-
     <div class="container">
       <div class="profile-fixed"> 
         <img src="{{asset('./images/avatar-home.png')}}"  class="float-left rounded-circle profile-home" alt="profile Home">
@@ -13,7 +12,7 @@
           <div class="col-sm-6 border centered-div">
             <div class="row justify-content-md-center border border-top-0 mt-2">
                 <div class="col-sm float-left ">
-                  <a href="{{route('home')}}"><img src="{{asset('images/icons_profile/back.svg')}}" class="icon-back"  /></a>
+                  <a href="{{route('back', ['page' => $back])}}"><img src="{{asset('images/icons_profile/back.svg')}}" class="icon-back"  /></a>
                   <h5><strong>Discussion</strong></h5> 
                   </div>
                   <div class="col-sm float-right"> 
@@ -29,8 +28,8 @@
                 
                   <img src="{{asset('./images/avatar-home.png')}}"  class="rounded-circle profile-home" alt="profile Home">
                 </div>
-                <div class="post"><a href="#" class="name-user-profile">{{$tweet->user->name}}</a> <a href="#" class="username">{{"@".$tweet->user_id}}</a> -
-                 <span><a class="time-post" href="{{route('show_comments',['tweet_id' => $tweet->id])}}">{{Carbon\Carbon::parse($tweet->created_at)->diffForHumans()}}</a></span> <br>
+                <div class="post"><a href="{{route('profile')}}" class="name-user-profile">{{$tweet->user->name}}</a> <a href="{{route('profile')}}" class="username">{{"@".$tweet->user_id}}</a> -
+                 <span><a class="time-post" href="{{route('show_comments',['tweet_id' => $tweet->id, 'back' => $back])}}">{{Carbon\Carbon::parse($tweet->created_at)->diffForHumans()}}</a></span> <br>
                   <p class="post-content">
                   {{$tweet->tweet_text}}
                   </p>
@@ -52,8 +51,8 @@
                         <img src="{{asset('./images/avatar-home.png')}}"  class="rounded-circle profile-home" alt="profile Home">
                     </div>
                   <div class="post">
-                    <a href="#" class="name-user-profile">{{$comment->user->name}}</a>
-                     <a href="#" class="username">{{"@".$comment->user_id}}</a> -
+                    <a href="{{route('get_user', ['userId' => $comment->user_id])}}" class="name-user-profile">{{$comment->user->name}}</a>
+                     <a href="{{route('get_user', ['userId' => $comment->user_id])}}" class="username">{{"@".$comment->user_id}}</a> -
                      <span><a class="time-post" href="#">{{Carbon\Carbon::parse($comment->created_at)->diffForHumans()}}</a></span> <br>
                       <p class="post-content">
                         {{$comment->comment_text}}

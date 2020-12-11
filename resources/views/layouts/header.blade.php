@@ -10,5 +10,6 @@
     <link href="{{ asset('css/'.$file.'.css') }}"  rel="stylesheet">
 
         <title>Twitter</title>
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
   </head>
   <body>

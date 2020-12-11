@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTweetsTable extends Migration
+class CreateSubscribesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,13 @@ class CreateTweetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tweets', function (Blueprint $table) {
+        Schema::create('subscribes', function (Blueprint $table) {
             $table->id();
-            $table->text('tweet_text');
-            $table->string('geo_lat')->nullable();
-            $table->string('geo_long')->nullable();
             $table->unsignedBigInteger('user_id');
-            $table->string('tweet_owner')->nullable();
-            $table->timestamps();
+            $table->unsignedBigInteger('id_follow');
             $table->foreign('user_id')->references('id')->on('users');
-            
+            $table->foreign('id_follow')->references('id')->on('users');
+            $table->timestamps();
         });
     }
 
@@ -33,7 +30,6 @@ class CreateTweetsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tweets');
+        Schema::dropIfExists('subscribes');
     }
 }
-

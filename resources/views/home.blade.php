@@ -45,24 +45,35 @@
               </div>
 
               @foreach ($tweets as $tweet)
+                  
                 <div class="row justify-content-md-center border border-top-0">
                   <div class="row justify-content-md-center  border-top-0 pl-0 "> 
                     <div class="float-left mt-0 ml-0 image-profile-circle ml-0">
                   
                         <img src="./images/avatar-home.png"  class="rounded-circle profile-home" alt="profile Home">
                     </div>
-                  <div class="post"><a href="#" class="name-user-profile">{{$tweet->user->name}}</a> <a href="#" class="username">{{"@".$tweet->user_id}}</a> -
-                     <span><a class="time-post" href="{{route('show_comments',['tweet_id' => $tweet->id])}}">{{Carbon\Carbon::parse($tweet->created_at)->diffForHumans()}}</a></span> <br>
+                  <div class="post"><a href="{{route('get_user', ['userId' => $tweet->user_id])}}" class="name-user-profile">{{$tweet->user->name}}</a> <a href="{{route('get_user', ['userId' => $tweet->user_id])}}" class="username">{{"@".$tweet->user_id}}</a> -
+                     <span><a class="time-post" href="{{route('show_comments',['tweet_id' => $tweet->id, 'back' => 'home'])}}">{{$tweet->createdAt()}}</a></span> 
+                     @if ($tweet->tweet_owner != null)
+                        <span class="time-post" >Retweet from </span>
+                        <a href="{{route('get_user', ['userId' => $tweet->getRetweetUserId()])}}" class="name-user-profile">{{$tweet->getRetweetUserName()}}</a>
+                     @endif
+                     <br>
                       <p class="post-content">
-                        {{$tweet->tweet_text}}
+                        {{$tweet->tweet_text}}<br>
+                        @foreach ($tweet->hashtags as $hashtag)
+                          @php
+                              $hash = str_replace('#', '',$hashtag->hashtag );
+                          @endphp
+                          <a href="{{route('hashtag.index', ['hashtag' => $hash])}}">{{$hashtag->hashtag}}</a><br>
+                        @endforeach
+                        
                       </p>
                       <a  class="count-comment-class" href="#" data-toggle="modal" data-target="#exampleModal" id="comment-home-{{$tweet->id}}" >
                           <img src="images/icons_0/comment.svg" class="ml-1 mr-1 post-icons "  /></a><span>{{$tweet->comments->count()}}</span> 
                  
-                     
-
                         @php
-                          $isRed = 0;  
+                          $isRed = 0;
                         @endphp
                         @foreach ($tweet->likes as $like)
                             @if ($like->user_id == Auth::id())
@@ -80,12 +91,9 @@
                           <img src="images/icons_0/like_red.svg" class="ml-1 mr-1 post-icons like"   id={{$tweet->id}} /><span class="count-like-{{$tweet->id}}" >{{$tweet->likes->count()}}</span>
                         @endif
 
-                        @if ($tweet->likes->count() == 0)
-                    <img src="images/icons_0/like.svg" class="ml-1 mr-1 post-icons like"   id={{$tweet->id}} /><span class="count-like-{{$tweet->id}}">{{$tweet->likes->count()}}</span>
-                        @endif
                         
-                        <img src="images/icons_0/share.svg" class="ml-1 mr-1 post-icons"  />
-                        <img src="images/icons_0/register.svg" class="ml-1 mr-1 post-icons "  />
+                        <a href="{{route('retweet.tweet', ['id' => $tweet->id])}}"><img src="images/icons_0/share.svg" class="ml-1 mr-1 post-icons"  /></a>
+                        <a href="{{route('bookmark.save', ['tweet_id' => $tweet->id])}}"><img src="images/icons_0/register.svg" class="ml-1 mr-1 post-icons "  /></a>
                     </div>
                   </div>
                 </div>

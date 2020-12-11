@@ -1,0 +1,21 @@
+--------------------Not yet-----------------------
+add user to this list
+listed tweet's members of this list
+listed the members of this list
+delete user from this list
+
+
+------------------Done----------------------------
+follow others users
+get count of tweets
+get count of subscriptions
+get count of subscribers
+display tendance hashtag
+extract hashtags from tweets and insert its in the hashtag table
+show tweets with theirs hashtags
+save tweet to bookmark and delete it from this bookmark
+display all tweets  from bookmark
+share tweet from an other user
+display this tweet with the original username
+create list by user
+show lists of user on and lists created by his

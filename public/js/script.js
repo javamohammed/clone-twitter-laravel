@@ -33,3 +33,51 @@ $( ".like" ).click(function() {
     console.log("p  ",p)
    $("#form-comment").attr("action", p)
   })
+
+
+  $( ".delete" ).click(function() {
+  
+    let  bookmark_id = $(this).attr("id")
+    console.log(bookmark_id)
+    $.ajax({
+        type: "DELETE",
+        url: 'http://localhost/clone-twitter-laravel/public/bookmark/delete',
+        dataType: 'json',
+        data:{
+          id: bookmark_id,
+        },
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+        success: function(data){
+          location.reload();
+        }
+    });
+    });
+
+  
+
+$( ".suggestion" ).click(function() {
+
+  const  element = $(this).attr("id")
+  const arrElement = element.split('|')
+  const id_follow =  arrElement[0]
+  const user_id =  arrElement[1]
+  $( "#"+id_follow+'-container' ).remove();
+  $.ajax({
+    type: "GET",
+    url: 'http://localhost/clone-twitter-laravel/public/subscribe/'+user_id+'/'+id_follow,
+    dataType: 'json',
+    success: function(data){
+      
+    }
+});
+  });
+
+$('#more-subscribers').click(function () {
+  location.reload();
+})
+
+$(document).ready(function(){
+  $('[data-toggle="popover"]').popover();
+});
