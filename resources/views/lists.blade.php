@@ -40,8 +40,8 @@
                       <img src="https://pbs.twimg.com/media/EXZ2rMvVAAAAfrN?format=png&amp;name=240x240"  class=" profile-home" alt="profile Home">
                   </div>
                 <div class="post">
-                  <a href="#" class="name-user-profile" style="cursor: pointer">{{$list->name_group}}({{$list->users->count()}})</a><br>
-                  <a href="#" class="username">{{'@'.$list->user_id}} {{$list->user->name}}</a> 
+                  <a href="{{route('lists.show', ['id'=>$list->id])}}" class="name-user-profile" style="cursor: pointer">{{$list->name_group}}({{$list->users->count()}})</a><br>
+                  <a href="{{route('lists.show', ['id'=>$list->id])}}" class="username">{{'@'.$list->user_id}} {{$list->user->name}}</a> 
                   </div>
                 </div>
               </div>

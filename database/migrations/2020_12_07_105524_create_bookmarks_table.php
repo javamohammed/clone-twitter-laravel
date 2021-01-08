@@ -17,8 +17,10 @@ class CreateBookmarksTable extends Migration
             $table->id();
             $table->text('tweet_text');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('owner_id');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('owner_id')->references('id')->on('users');
         });
     }
 

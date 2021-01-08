@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Verified;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -36,6 +37,21 @@ class AuthController extends Controller
         event(new Verified($request->user()));
 
         return redirect('/home');
+    }
+
+    public function loadedUsers($str){
+        $users = User::where('email', $str)->orWhere('email', 'like', '%' . trim($str). '%')
+                        ->orWhere('name', 'like', '%' . trim($str). '%')
+                        ->get();
+        $json = [];
+        if($str != "" ){
+            foreach($users as $user)
+            {
+                $json[$user->id] = $user->name.'['.$user->email.']';
+            }
+        }
+        
+        return response()->json($json);
     }
 
 }

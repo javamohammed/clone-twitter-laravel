@@ -50,10 +50,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     //Hashtag
     Route::get('/hashtag/{hashtag}', [HashtagController::class, 'index'] )->name('hashtag.index');
 
-    //lists
+    //lists loadedUsers
     Route::get('/lists/all', [ListController::class, 'index'] )->name('lists.index');
     Route::get('/lists/on', [ListController::class, 'listsOn'] )->name('lists.on');
     Route::post('/lists/save', [ListController::class, 'store'] )->name('lists.save');
+    Route::get('/lists/{id}', [ListController::class, 'show'] )->name('lists.show');
+    Route::get('/users/load/{str}', [AuthController::class, 'loadedUsers'] )->name('loaded.users');
+    Route::post('/lists/add/user/{listId}', [ListController::class, 'addMember'] )->name('lists.add.member');
+    Route::post('/lists/delete/user', [ListController::class, 'deleteMember'] )->name('lists.delete.member');
 
     Route::get('/back/{page}', function($page){
         if($page == 'profile'){

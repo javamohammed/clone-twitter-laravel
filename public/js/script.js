@@ -53,8 +53,30 @@ $( ".like" ).click(function() {
           location.reload();
         }
     });
-    });
+});
 
+$( ".delete-from-list" ).click(function() {
+  
+  let  userId = $(this).attr("id")
+  let  listId = $(this).attr("list")
+  
+  $.ajax({
+      type: "POST",
+      url: 'http://localhost/clone-twitter-laravel/public/lists/delete/user',
+      dataType: 'json',
+      data:{
+        listId: listId,
+        userId:userId
+      },
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+      success: function(data){
+        console.log(data)
+        location.reload();
+      }
+  });
+});
   
 
 $( ".suggestion" ).click(function() {
@@ -81,3 +103,26 @@ $('#more-subscribers').click(function () {
 $(document).ready(function(){
   $('[data-toggle="popover"]').popover();
 });
+
+
+$( "#new_member" ).keyup(function(event) {
+
+  const  str = event.target.value
+  $('#livesearch').empty()
+  $( "#livesearch" ).hide();
+
+  $.ajax({
+    type: "GET",
+    url: "http://localhost/clone-twitter-laravel/public/users/load/"+str,
+    dataType: 'json',
+    success: function(data){
+      $.each(data, function(k, v) {
+        $('#livesearch').append($('<option>', {
+          value:k,
+          text: v
+      }));
+    });
+    $( "#livesearch" ).show();
+      }
+  });
+  });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Group;
 use App\Models\User;
+use App\Models\user_group;
 
 class ListController extends Controller
 {
@@ -29,6 +30,8 @@ class ListController extends Controller
         $userId = \Auth::id();
         $user = User::find($userId);
         $lists = $user->groups()->get();
+        
+
         /*
         foreach($lists as $list) {
             dd($list);
@@ -36,6 +39,55 @@ class ListController extends Controller
         dd("");*/
         return view('lists', compact('lists'));
     }
+    public function addMember(Request $request, $listId)
+    {
+        $userId = \Auth::id();
+        $data = $request->all();
+        $member = $data['new_member'];
+        $list = Group::where('id', $listId)->where('user_id', $userId)->get();
+        if($list->count() == 0){
+            return redirect()->route('lists.index'); 
+        }
+        $already = 0;
+        foreach($list[0]->users as $user){
+            if($user->id == $member ){
+                $already = 1;
+            }
+        }
+        if($already == 1){
+            return redirect()->route('lists.index'); 
+        }
+        $list[0]->users()->attach($member);
+        return redirect()->route('lists.index'); 
+    }
+
+    public function deleteMember(Request $request)
+    {
+        //
+        $userId = \Auth::id();
+        $data = $request->all();
+        $member = $data['userId'];
+        $listId = $data['listId'];
+
+        $list = Group::where('id', $listId)->where('user_id', $userId)->get();
+        if($list->count() == 0){
+            return response()->json(["msg" => "not found"]);
+        }
+        $already = 0;
+        foreach($list[0]->users as $user){
+            if($user->id == $member ){
+                $already = 1;
+            }
+        }
+        if($already == 0){
+            return response()->json(["msg" => "not found"]);
+        }
+        $list[0]->users()->detach($member);
+        return response()->json(["msg" => "done"]);
+    }
+
+
+    
 
     /**
      * Show the form for creating a new resource.
@@ -79,6 +131,21 @@ class ListController extends Controller
     public function show($id)
     {
         //
+        $userId = \Auth::id();
+        $list = Group::Where('user_id', $userId)->Where('id', $id)->get();
+        $list = $list[0];
+        /*
+        foreach($list->users as $user) {
+            foreach($user->tweets as $tweet) {
+                if(){
+                    echo $tweet->id.'<br>';
+                }
+                
+            }
+        }
+        dd("");*/
+        //dd($list->users);
+        return view('list', compact('list'));
     }
 
     /**
